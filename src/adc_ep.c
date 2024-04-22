@@ -30,12 +30,13 @@
  **********************************************************************************************************************/
 
 /* local variables */
-volatile bool g_ready_to_read = false;
+volatile bool b_ready_to_read = false;
 static uint16_t g_adc_data;
 static bool g_window_comp_event = false;
-uint8_t g_volt_str[5] = {RESET_VALUE};
-float g_adc_volt = {RESET_VALUE};
- 
+char volt_str[5] = {RESET_VALUE};
+float adc_volt = {RESET_VALUE};
+
+
 #ifdef BOARD_RA2A1_EK
 static uint16_t g_prev_adc_data;
 #endif
@@ -120,7 +121,7 @@ static fsp_err_t adc_scan_start(void)
     fsp_err_t err = FSP_SUCCESS;     // Error status
     g_window_comp_event = false;
 
-    if (false == g_ready_to_read)
+    if (false == b_ready_to_read)
     {
         /* Open/Initialize ADC module */
         err = R_ADC_Open (&g_adc_ctrl, &g_adc_cfg);
@@ -129,6 +130,16 @@ static fsp_err_t adc_scan_start(void)
         {
             /* ADC Failure message */
             APP_ERR_PRINT("** R_ADC_Open API failed ** \r\n");
+            return err;
+        }
+
+        /* Configures the ADC scan parameters */
+        err = R_ADC_ScanCfg (&g_adc_ctrl, &g_adc_channel_cfg);
+        /* handle error */
+        if (FSP_SUCCESS != err)
+        {
+            /* ADC Failure message */
+            APP_ERR_PRINT("** R_ADC_ScanCfg API failed ** \r\n");
             return err;
         }
 
@@ -148,16 +159,6 @@ static fsp_err_t adc_scan_start(void)
         }
 #endif
 
-        /* Configures the ADC scan parameters */
-        err = R_ADC_ScanCfg (&g_adc_ctrl, &g_adc_channel_cfg);
-        /* handle error */
-        if (FSP_SUCCESS != err)
-        {
-            /* ADC Failure message */
-            APP_ERR_PRINT("** R_ADC_ScanCfg API failed ** \r\n");
-            return err;
-        }
-
         /* Start the ADC scan*/
         err = R_ADC_ScanStart (&g_adc_ctrl);
         /* handle error */
@@ -174,7 +175,7 @@ static fsp_err_t adc_scan_start(void)
         APP_PRINT("\r\nADC Started Scan\r\n");
 
         /* Indication to start reading the adc data */
-        g_ready_to_read = true;
+        b_ready_to_read = true;
     }
     else
     {
@@ -198,7 +199,7 @@ static fsp_err_t adc_scan_stop(void)
     fsp_err_t err = FSP_SUCCESS;     // Error status
 
     /* Stop the scan if adc scan is started in continuous scan mode else ignore */
-    if((ADC_MODE_SINGLE_SCAN != g_adc_cfg.mode) && (true == g_ready_to_read ))
+    if((ADC_MODE_SINGLE_SCAN != g_adc_cfg.mode) && (true == b_ready_to_read ))
     {
         /* Stop ADC scan */
         err = R_ADC_ScanStop (&g_adc_ctrl);
@@ -213,7 +214,7 @@ static fsp_err_t adc_scan_stop(void)
         APP_PRINT("\r\nADC Scan stopped\r\n");
 
         /* reset to indicate stop reading the adc data */
-        g_ready_to_read = false;
+        b_ready_to_read = false;
 
         /* Close the ADC module*/
         err = R_ADC_Close (&g_adc_ctrl);
@@ -247,7 +248,7 @@ fsp_err_t adc_read_data(void)
     fsp_err_t err = FSP_SUCCESS;     // Error status
 
     /* Read the result */
-    err = R_ADC_Read (&g_adc_ctrl, ADC_CHANNEL_0, &g_adc_data);
+    err = R_ADC_Read (&g_adc_ctrl, ADC_CHANNEL_1, &g_adc_data);
     /* handle error */
     if (FSP_SUCCESS != err)
     {
@@ -258,24 +259,24 @@ fsp_err_t adc_read_data(void)
 
 #ifdef BOARD_RA2A1_EK
     {
-        g_adc_volt = (float)((g_adc_data * V_REF)/ADC_16_BIT);
+        adc_volt = (float)((g_adc_data * V_ref)/ADC_16_BIT);
     }
 #else
     {
-        g_adc_volt = (float)((g_adc_data * V_REF)/ADC_12_BIT);
+        adc_volt = (float)((g_adc_data * V_ref)/ADC_12_BIT);
     }
 #endif
 
-    snprintf((char *)g_volt_str, sizeof(float), "%0.2f", g_adc_volt);
+    snprintf(volt_str,SIZE_64, "%0.2f", adc_volt);
 
     APP_PRINT("\r\nThe Voltage Reading from ADC: %d\r\n", g_adc_data);
-    APP_PRINT("\r\nThe ADC input voltage: %s\r\n", g_volt_str);
+    APP_PRINT("\r\nThe ADC input voltage: %s\r\n", volt_str);
 
-    /* In adc single scan mode after reading the data, it stops.So reset the g_ready_to_read state to
+    /* In adc single scan mode after reading the data, it stops.So reset the b_ready_to_read state to
      * avoid reading unnecessarily. close the adc module as it gets opened in start scan command.*/
     if (ADC_MODE_SINGLE_SCAN == g_adc_cfg.mode || g_window_comp_event == true)
     {
-        g_ready_to_read = false;
+        b_ready_to_read = false;
 
         /* Stop ADC scan */
         err = R_ADC_ScanStop (&g_adc_ctrl);
