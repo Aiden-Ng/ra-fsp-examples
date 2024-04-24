@@ -82,32 +82,32 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
-mmp_1.srec \
+mmp.srec \
 
 SECONDARY_SIZE += \
-mmp_1.siz \
+mmp.siz \
 
 
 # All Target
-all: mmp_1.elf secondary-outputs
+all: mmp.elf secondary-outputs
 
 # Tool invocations
-mmp_1.elf: $(OBJS) $(USER_OBJS) $(LINKER_SCRIPT)
-	$(file > mmp_1.elf.in,-mcpu=cortex-m23 -mthumb -O2 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-strict-aliasing -Wunused -Wuninitialized -Wall -Wextra -Wmissing-declarations -Wconversion -Wpointer-arith -Wshadow -Wlogical-op -Waggregate-return -Wfloat-equal -g -T "fsp.ld" -Xlinker --gc-sections -L "C:\\Workspace_Aevice\\workspace_fsp_IRQ_example_EKRA2A1_self\\mmp_1/script" -Wl,-Map,"mmp_1.map" --specs=nano.specs --specs=rdimon.specs -o "mmp_1.elf" -Wl,--start-group $(OBJS) $(USER_OBJS) $(LIBS) -Wl,--end-group)
-	@echo Building target: $@ && arm-none-eabi-gcc @"mmp_1.elf.in"
+mmp.elf: $(OBJS) $(USER_OBJS) $(LINKER_SCRIPT)
+	$(file > mmp.elf.in,-mcpu=cortex-m23 -mthumb -O2 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-strict-aliasing -Wunused -Wuninitialized -Wall -Wextra -Wmissing-declarations -Wconversion -Wpointer-arith -Wshadow -Wlogical-op -Waggregate-return -Wfloat-equal -g -T "fsp.ld" -Xlinker --gc-sections -L "C:\\Workspace_Aevice\\workspace_fsp_IRQ_example_EKRA2A1_self\\mmp/script" -Wl,-Map,"mmp.map" --specs=nano.specs --specs=rdimon.specs -o "mmp.elf" -Wl,--start-group $(OBJS) $(USER_OBJS) $(LIBS) -Wl,--end-group)
+	@echo Building target: $@ && arm-none-eabi-gcc @"mmp.elf.in"
 
-mmp_1.srec: mmp_1.elf
-	arm-none-eabi-objcopy -O srec "mmp_1.elf"  "mmp_1.srec"
+mmp.srec: mmp.elf
+	arm-none-eabi-objcopy -O srec "mmp.elf"  "mmp.srec"
 
-mmp_1.siz: mmp_1.elf
-	arm-none-eabi-size --format=berkeley "mmp_1.elf"
+mmp.siz: mmp.elf
+	arm-none-eabi-size --format=berkeley "mmp.elf"
 
 # Other Targets
 clean:
 	-$(file > clean_file.tmp,  $(JMP_DEPS)  $(FSY_DEPS)  $(C_UPPER_DEPS)  $(SECONDARY_SIZE)  $(SRC_UPPER_DEPS)  $(P_UPPER_DEPS)  $(S_DEPS)  $(PP_UPPER_DEPS)  $(P_DEPS)  $(FSY_UPPER_DEPS)  $(C_DEPS)  $(SRC_DEPS)  $(JMP_UPPER_DEPS)  $(PP_DEPS)  $(ASM_UPPER_DEPS)  $(SX_DEPS)  $(SX_UPPER_DEPS)  $(OBJS)  $(SECONDARY_FLASH)  $(ASM_DEPS)  $(SREC)  $(S_UPPER_DEPS)  $(MAP) )
 	-@ xargs -P 2 -s 32000 -t -a clean_file.tmp $(RM)
 	-@$(RM) clean_file.tmp
-	-$(RM)  mmp_1.elf
+	-$(RM)  mmp.elf
 	-@echo ' '
 
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_SIZE)
