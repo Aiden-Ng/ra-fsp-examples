@@ -1,1 +1,0 @@
-start "J-Link" "JLink\JLink.exe" -commanderscript read_mem_ra8m1.jlink
