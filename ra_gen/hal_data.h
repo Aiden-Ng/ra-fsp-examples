@@ -10,14 +10,24 @@
 #include "r_adc_api.h"
 FSP_HEADER
 /** Timer on GPT Instance. */
+extern const timer_instance_t g_timer1;
+
+/** Access the GPT instance using these structures when calling API functions directly (::p_api is not used). */
+extern gpt_instance_ctrl_t g_timer1_ctrl;
+extern const timer_cfg_t g_timer1_cfg;
+
+#ifndef timer1_callback
+void timer1_callback(timer_callback_args_t *p_args);
+#endif
+/** Timer on GPT Instance. */
 extern const timer_instance_t g_timer0;
 
 /** Access the GPT instance using these structures when calling API functions directly (::p_api is not used). */
 extern gpt_instance_ctrl_t g_timer0_ctrl;
 extern const timer_cfg_t g_timer0_cfg;
 
-#ifndef NULL
-void NULL(timer_callback_args_t *p_args);
+#ifndef timer0_callback
+void timer0_callback(timer_callback_args_t *p_args);
 #endif
 /** ADC on ADC Instance. */
 extern const adc_instance_t g_adc0;

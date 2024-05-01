@@ -16,8 +16,7 @@
 //#include "fsp_common_api.h"
 
 #define RESET_VALUE 0X00
-#define ADC_MODULE  1
-#define IRQ_MODULE 1
+
 
 #define SEGGER_RTT_PRINT_MODULE 1
 

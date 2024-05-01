@@ -55,7 +55,7 @@ FSP Configuration
     
   RA2A1 event data
   RA Common
-    Main stack size (bytes): 0x400
+    Main stack size (bytes): 0x5000
     Heap size (bytes): 0x400
     MCU Vcc (mV): 3300
     Parameter checking: Enabled
@@ -91,7 +91,7 @@ FSP Configuration
       AVCC1 39 ANALOG0_AVCC1 - - - - - - - - IO "Read only" - 
       AVSS0 57 ANALOG0_AVSS0 - - - - - - - - IO "Read only" - 
       AVSS1 40 ANALOG0_AVSS1 - - - - - - - - IO "Read only" - 
-      P000 63 - - - - Disabled - - "AGT1: AGTIO; CTSU0: TS16; GPT4: GTIOCB; ICU0: IRQ04; IIC0: SCL; KINT0: KRM0; SCI9: RXD; SCI9: SCL; SPI1: MISO" - None - - 
+      P000 63 GPIO - - None "Input mode" - None "AGT1: AGTIO; CTSU0: TS16; GPT4: GTIOCB; ICU0: IRQ04; IIC0: SCL; KINT0: KRM0; SCI9: RXD; SCI9: SCL; SPI1: MISO" - IO - - 
       P001 62 - - - - Disabled - - "CTSU0: TS15; ICU0: IRQ00; RTC0: RTCOUT; SCI9: CTS; SPI1: RSPCK" - None - - 
       P002 61 - - - - Disabled - - "ADC0: AN07; DAC81: DA; OPAMP2: AMP+" - None - - 
       P003 60 - - - - Disabled - - "ADC0: AN06; OPAMP2: AMP-" - None - - 
@@ -141,7 +141,7 @@ FSP Configuration
       P914 19 USB_FS0_DP - - - "Peripheral mode" - - "USB_FS0: DP" - IO - - 
       P915 18 USB_FS0_DM - - - "Peripheral mode" - - "USB_FS0: DM" - IO - - 
       RES# 25 SYSTEM0_RES - - - - - - - - IO "Read only" - 
-      SBIAS/VREFI 38 "SDADC0_VREFI / SDADC0_SBIAS" - - - - - - - - IO "Read only" - 
+      SBIAS/VREFI 38 "SDADC0_SBIAS / SDADC0_VREFI" - - - - - - - - IO "Read only" - 
       VCC 11 SYSTEM0_VCC - - - - - - - - IO "Read only" - 
       VCCUSB 20 USB_FS0_VCC - - - - - - - - IO "Read only" - 
       VCCUSBLDO 21 USB_FS0_VCCLDO - - - - - - - - IO "Read only" - 
@@ -157,7 +157,7 @@ FSP Configuration
       AVCC1 39 ANALOG0_AVCC1 - - - - - - - - IO "Read only" - 
       AVSS0 57 ANALOG0_AVSS0 - - - - - - - - IO "Read only" - 
       AVSS1 40 ANALOG0_AVSS1 - - - - - - - - IO "Read only" - 
-      P000 63 - - - - Disabled - - "AGT1: AGTIO; CTSU0: TS16; GPT4: GTIOCB; ICU0: IRQ04; IIC0: SCL; KINT0: KRM0; SCI9: RXD; SCI9: SCL; SPI1: MISO" - None - - 
+      P000 63 - - - None Disabled - None "AGT1: AGTIO; CTSU0: TS16; GPT4: GTIOCB; ICU0: IRQ04; IIC0: SCL; KINT0: KRM0; SCI9: RXD; SCI9: SCL; SPI1: MISO" - IO - - 
       P001 62 - - - - Disabled - - "CTSU0: TS15; ICU0: IRQ00; RTC0: RTCOUT; SCI9: CTS; SPI1: RSPCK" - None - - 
       P002 61 - - - - Disabled - - "ADC0: AN07; DAC81: DA; OPAMP2: AMP+" - None - - 
       P003 60 - - - - Disabled - - "ADC0: AN06; OPAMP2: AMP-" - None - - 
@@ -207,7 +207,7 @@ FSP Configuration
       P914 19 - - - - Disabled - - "USB_FS0: DP" - IO - - 
       P915 18 - - - - Disabled - - "USB_FS0: DM" - IO - - 
       RES# 25 SYSTEM0_RES - - - - - - - - IO "Read only" - 
-      SBIAS/VREFI 38 "SDADC0_VREFI / SDADC0_SBIAS" - - - - - - - - IO "Read only" - 
+      SBIAS/VREFI 38 "SDADC0_SBIAS / SDADC0_VREFI" - - - - - - - - IO "Read only" - 
       VCC 11 SYSTEM0_VCC - - - - - - - - IO "Read only" - 
       VCCUSB 20 USB_FS0_VCC - - - - - - - - IO "Read only" - 
       VCCUSBLDO 21 USB_FS0_VCCLDO - - - - - - - - IO "Read only" - 
@@ -230,7 +230,7 @@ FSP Configuration
     
   Module "Timer, General PWM (r_gpt)"
     Parameter Checking: Default (BSP)
-    Pin Output Support: Disabled
+    Pin Output Support: Enabled
     Write Protect Enable: Disabled
     
   HAL
@@ -281,10 +281,10 @@ FSP Configuration
       
     Instance "g_timer0 Timer, General PWM (r_gpt)"
       General: Name: g_timer0
-      General: Channel: 0
+      General: Channel: 1
       General: Mode: Periodic
-      General: Period: 0x10000
-      General: Period Unit: Raw Counts
+      General: Period: 1
+      General: Period Unit: Seconds
       Output: Custom Waveform: GTIOA: Initial Output Level: Pin Level Low
       Output: Custom Waveform: GTIOA: Cycle End Output Level: Pin Level Retain
       Output: Custom Waveform: GTIOA: Compare Match Output Level: Pin Level Retain
@@ -308,8 +308,56 @@ FSP Configuration
       Input: Capture B Source: 
       Input: Noise Filter A Sampling Clock Select: No Filter
       Input: Noise Filter B Sampling Clock Select: No Filter
-      Interrupts: Callback: NULL
-      Interrupts: Overflow/Crest Interrupt Priority: Disabled
+      Interrupts: Callback: timer0_callback
+      Interrupts: Overflow/Crest Interrupt Priority: Priority 1
+      Interrupts: Capture A Interrupt Priority: Disabled
+      Interrupts: Capture B Interrupt Priority: Disabled
+      Interrupts: Underflow/Trough Interrupt Priority: Disabled
+      Extra Features: Extra Features: Disabled
+      Extra Features: Output Disable: POEG Link: POEG Channel 0
+      Extra Features: Output Disable: Output Disable POEG Trigger: 
+      Extra Features: ADC Trigger: Start Event Trigger (Channels with GTINTAD only): 
+      Extra Features: Dead Time (Value range varies with Channel): Dead Time Count Up (Raw Counts): 0
+      Extra Features: Dead Time (Value range varies with Channel): Dead Time Count Down (Raw Counts) (Channels with GTDVD only): 0
+      Extra Features: ADC Trigger (Channels with GTADTRA only): ADC A Compare Match (Raw Counts): 0
+      Extra Features: ADC Trigger (Channels with GTADTRB only): ADC B Compare Match (Raw Counts): 0
+      Extra Features: Interrupt Skipping (Channels with GTITC only): Interrupt to Count: None
+      Extra Features: Interrupt Skipping (Channels with GTITC only): Interrupt Skip Count: 0
+      Extra Features: Interrupt Skipping (Channels with GTITC only): Skip ADC Events: None
+      Extra Features: Output Disable: GTIOCA Disable Setting: Disable Prohibited
+      Extra Features: Output Disable: GTIOCB Disable Setting: Disable Prohibited
+      
+    Instance "g_timer1 Timer, General PWM (r_gpt)"
+      General: Name: g_timer1
+      General: Channel: 2
+      General: Mode: Periodic
+      General: Period: 250
+      General: Period Unit: Microseconds
+      Output: Custom Waveform: GTIOA: Initial Output Level: Pin Level Low
+      Output: Custom Waveform: GTIOA: Cycle End Output Level: Pin Level Retain
+      Output: Custom Waveform: GTIOA: Compare Match Output Level: Pin Level Retain
+      Output: Custom Waveform: GTIOA: Retain Output Level at Count Stop: Disabled
+      Output: Custom Waveform: GTIOB: Initial Output Level: Pin Level Low
+      Output: Custom Waveform: GTIOB: Cycle End Output Level: Pin Level Retain
+      Output: Custom Waveform: GTIOB: Compare Match Output Level: Pin Level Retain
+      Output: Custom Waveform: GTIOB: Retain Output Level at Count Stop: Disabled
+      Output: Custom Waveform: Custom Waveform Enable: Disabled
+      Output: Duty Cycle Percent (only applicable in PWM mode): 50
+      Output: GTIOCA Output Enabled: False
+      Output: GTIOCA Stop Level: Pin Level Low
+      Output: GTIOCB Output Enabled: False
+      Output: GTIOCB Stop Level: Pin Level Low
+      Input: Count Up Source: 
+      Input: Count Down Source: 
+      Input: Start Source: 
+      Input: Stop Source: 
+      Input: Clear Source: 
+      Input: Capture A Source: 
+      Input: Capture B Source: 
+      Input: Noise Filter A Sampling Clock Select: No Filter
+      Input: Noise Filter B Sampling Clock Select: No Filter
+      Interrupts: Callback: timer1_callback
+      Interrupts: Overflow/Crest Interrupt Priority: Priority 0 (highest)
       Interrupts: Capture A Interrupt Priority: Disabled
       Interrupts: Capture B Interrupt Priority: Disabled
       Interrupts: Underflow/Trough Interrupt Priority: Disabled

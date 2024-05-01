@@ -49,6 +49,7 @@
       <configSetting altId="cgc0.xtal.p213" configurationId="cgc0.xtal" isUsedByDriver="true"/>
       <configSetting altId="debug0.swclk.p300" configurationId="debug0.swclk" isUsedByDriver="true"/>
       <configSetting altId="debug0.swdio.p108" configurationId="debug0.swdio" isUsedByDriver="true"/>
+      <configSetting altId="p000.input" configurationId="p000"/>
       <configSetting altId="p201.input" configurationId="p201"/>
       <configSetting altId="p205.output.low" configurationId="p205"/>
       <configSetting altId="p206.input" configurationId="p206"/>

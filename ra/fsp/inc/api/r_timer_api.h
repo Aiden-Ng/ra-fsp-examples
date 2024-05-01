@@ -168,8 +168,8 @@ typedef struct st_timer_status
 {
     uint32_t      counter;             ///< Current counter value
     timer_state_t state;               ///< Current timer state (running or stopped)
-} timer_status_t;
 
+} timer_status_t;
 /** User configuration structure, used in open function */
 typedef struct st_timer_cfg
 {
