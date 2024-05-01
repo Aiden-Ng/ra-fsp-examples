@@ -11,8 +11,8 @@ gpt_instance_ctrl_t g_timer1_ctrl;
 const gpt_extended_pwm_cfg_t g_timer1_pwm_extend =
 {
     .trough_ipl          = (BSP_IRQ_DISABLED),
-#if defined(VECTOR_NUMBER_GPT2_COUNTER_UNDERFLOW)
-    .trough_irq          = VECTOR_NUMBER_GPT2_COUNTER_UNDERFLOW,
+#if defined(VECTOR_NUMBER_GPT0_COUNTER_UNDERFLOW)
+    .trough_irq          = VECTOR_NUMBER_GPT0_COUNTER_UNDERFLOW,
 #else
     .trough_irq          = FSP_INVALID_VECTOR,
 #endif
@@ -41,13 +41,13 @@ const gpt_extended_cfg_t g_timer1_extend =
                   (gpt_source_t) (GPT_SOURCE_NONE),
           .capture_b_source = (gpt_source_t) (GPT_SOURCE_NONE), .capture_a_ipl = (BSP_IRQ_DISABLED), .capture_b_ipl =
                   (BSP_IRQ_DISABLED),
-#if defined(VECTOR_NUMBER_GPT2_CAPTURE_COMPARE_A)
-    .capture_a_irq       = VECTOR_NUMBER_GPT2_CAPTURE_COMPARE_A,
+#if defined(VECTOR_NUMBER_GPT0_CAPTURE_COMPARE_A)
+    .capture_a_irq       = VECTOR_NUMBER_GPT0_CAPTURE_COMPARE_A,
 #else
           .capture_a_irq = FSP_INVALID_VECTOR,
 #endif
-#if defined(VECTOR_NUMBER_GPT2_CAPTURE_COMPARE_B)
-    .capture_b_irq       = VECTOR_NUMBER_GPT2_CAPTURE_COMPARE_B,
+#if defined(VECTOR_NUMBER_GPT0_CAPTURE_COMPARE_B)
+    .capture_b_irq       = VECTOR_NUMBER_GPT0_CAPTURE_COMPARE_B,
 #else
           .capture_b_irq = FSP_INVALID_VECTOR,
 #endif
@@ -81,7 +81,7 @@ const gpt_extended_cfg_t g_timer1_extend =
 const timer_cfg_t g_timer1_cfg =
 { .mode = TIMER_MODE_PERIODIC,
 /* Actual period: 0.00025 seconds. Actual duty: 50%. */.period_counts = (uint32_t) 0x1770,
-  .duty_cycle_counts = 0xbb8, .source_div = (timer_source_div_t) 0, .channel = 2, .p_callback = timer1_callback,
+  .duty_cycle_counts = 0xbb8, .source_div = (timer_source_div_t) 0, .channel = 0, .p_callback = timer1_callback,
   /** If NULL then do not add & */
 #if defined(NULL)
     .p_context           = NULL,
@@ -90,8 +90,8 @@ const timer_cfg_t g_timer1_cfg =
 #endif
   .p_extend = &g_timer1_extend,
   .cycle_end_ipl = (0),
-#if defined(VECTOR_NUMBER_GPT2_COUNTER_OVERFLOW)
-    .cycle_end_irq       = VECTOR_NUMBER_GPT2_COUNTER_OVERFLOW,
+#if defined(VECTOR_NUMBER_GPT0_COUNTER_OVERFLOW)
+    .cycle_end_irq       = VECTOR_NUMBER_GPT0_COUNTER_OVERFLOW,
 #else
   .cycle_end_irq = FSP_INVALID_VECTOR,
 #endif
@@ -182,7 +182,7 @@ const timer_cfg_t g_timer0_cfg =
   .p_context = &NULL,
 #endif
   .p_extend = &g_timer0_extend,
-  .cycle_end_ipl = (1),
+  .cycle_end_ipl = (0),
 #if defined(VECTOR_NUMBER_GPT1_COUNTER_OVERFLOW)
     .cycle_end_irq       = VECTOR_NUMBER_GPT1_COUNTER_OVERFLOW,
 #else

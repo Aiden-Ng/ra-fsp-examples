@@ -375,6 +375,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.make.1308723727.362768316" name="Build command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.make.1308723727"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm.1107523500.924357993" name="Remove command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm.1107523500"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.showCommand.1324359686" name="Echo tool command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.showCommand"/>
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.GNU_ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.781332229" name="GNU ARM Cross Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.1361791440">
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.311285942" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>

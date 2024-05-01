@@ -34,7 +34,7 @@
         </peripheral>
         <peripheral name="ADC0" group="ADC" security=""/>
         <peripheral name="GPT1" group="GPT" security=""/>
-        <peripheral name="GPT2" group="GPT" security=""/>
+        <peripheral name="GPT0" group="GPT" security=""/>
         <peripheral name="ICU">
             <slot name="IRQ0" secure="false"/>
             <slot name="IRQ1" secure="false"/>

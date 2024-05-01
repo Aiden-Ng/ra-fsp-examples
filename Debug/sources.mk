@@ -61,6 +61,7 @@ ra/fsp/src/r_gpt \
 ra/fsp/src/r_ioport \
 ra_gen \
 src/ADC_Module \
+src/GPT_Module \
 src/IRQ_Module \
 src/SEGGER_RTT \
 src \

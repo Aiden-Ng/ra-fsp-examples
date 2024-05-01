@@ -3,6 +3,8 @@
 #include "adc_thread_entry.h"
 #include "ADC_Module/ADC_Handler.h"
 #include "IRQ_Module/IRQ_Handler.h"
+#include "GPT_Module/GPT_Handler.h"
+#include "ADC_Framework_Stack/ADC_Periodic_Framework_Stack.h"
 
 //extended stack for adc framework
 #define ADC_MODULE          1//Note that ADC_MODULE and ADC_FRAMEWORK must be activated together
@@ -13,13 +15,15 @@
 #define GPT1_MODULE         1
 #define NORMAL_CODE         0
 #define LED_PIN             1
+#define OFF                 1
 
-//======================================================================================================
+#if OFF
+//===w==================================================================================================
 #if ADC_MODULE
 void adc_start_calibration(void);
 void adc_start_scan(void);
 void adc_read_value(void);
-void adc_periodic_read_scan(g_sf_adc0_period_t * g_sf_adc0_period_t_ptr);
+
 
 #define ADC_16_BIT                      32768u
 #define V_ref                           3.3f
@@ -29,18 +33,22 @@ void adc_periodic_read_scan(g_sf_adc0_period_t * g_sf_adc0_period_t_ptr);
 #define SHIFT_BY_ONE                    0x01
 #define SHIFT_BY_THREE                  0x03
 
+
 char adc_str[128] = {0};
 uint16_t raw_adc_digital_data = 0;
 adc_status_t adc0_status = {.state = ADC_STATE_IDLE}; //to store the adc status //please put it together with the R_ADC_StatusGet
 bool adc_call_status = false; //forgot ady
 #endif
 
+
+
 #if ADC_FRAMEWORK
-//create a adc0 framework object
+
 //#define ADC_PERIODIC_BUFFER_SIZE (4096u)
 #define ADC_PERIODIC_BUFFER_SIZE (4096u)
-//ignore
 #define ADC_PERIODIC_NUMBER_SAMPING_ITERATION 4000
+
+void adc_periodic_read_scan(sf_adc_period_t * g_sf_adc0_period_t_ptr);
 
 uint16_t buffer_array_index =0;
 uint16_t data[ADC_PERIODIC_BUFFER_SIZE] = {0};
@@ -50,7 +58,8 @@ sf_adc_periodic_cfg_t g_sf_adc_periodic0_cfg = {.p_data_buffer = p_buffer,
                                                 .data_buffer_length = ADC_PERIODIC_BUFFER_SIZE,
                                                 .sample_count = ADC_PERIODIC_NUMBER_SAMPING_ITERATION};
 
-g_sf_adc0_period_t g_sf_adc_periodic0 = {.p_cfg = &g_sf_adc_periodic0_cfg};
+//create a adc0 framework object
+sf_adc_period_t g_sf_adc_periodic0 = {.p_cfg = &g_sf_adc_periodic0_cfg};
 //check if the buffer is full for adc (condition to leave)
 bool buffer_is_full = false;
 
@@ -59,18 +68,22 @@ bool buffer_is_full = false;
 //======================================================================================================
 
 #if GPT_MODULE
-void timer0_Init(void);
-void timer0_Start(void);
-void timer0_InfoGet(void);
-void timer0_StatusGet(void);
 void timer0_callback(timer_callback_args_t *p_args);
 
-//initialization
-uint32_t timer0_count = 0;
+uint32_t        timer0_count = 0;
+timer_info_t    g_timer0_info = {0};
+timer_status_t  g_timer0_status = {0};
+bool            timer0_is_full = false;
+#endif
 
-timer_info_t g_timer0_info = {0};
-timer_status_t g_timer0_status = {0};
-bool timer0_is_full = false;
+//======================================================================================================
+#if GPT1_MODULE
+//initialization
+void timer1_callback(timer_callback_args_t *p_args);
+uint32_t        timer1_counter = 0;
+timer_info_t    g_timer1_info = {0};
+timer_status_t  g_timer1_status = {0};
+bool            timer1_is_full = false;
 #endif
 
 //======================================================================================================
@@ -81,16 +94,7 @@ uint16_t adc_read_count = 0;
 
 #endif
 
-//======================================================================================================
-#if GPT1_MODULE
 
-void timer1_callback(timer_callback_args_t *p_args);
-uint32_t timer1_counter = 0;
-timer_info_t g_timer1_info = {0};
-timer_status_t g_timer1_status = {0};
-bool timer1_is_full = false;
-
-#endif
 //======================================================================================================
 
 #if LED_PIN
@@ -130,7 +134,7 @@ void adc_thread_entry(void)
 
 #if LED_PIN
 
-    pin = 517;
+    pin = 517; // this is the pin for the led
     R_BSP_PinAccessEnable();
     R_BSP_PinWrite((bsp_io_port_pin_t) pin, pin_level_low);
 
@@ -140,48 +144,38 @@ void adc_thread_entry(void)
 
     APP_PRINTF("Entered GPT_MODULE\n");
     //timer0_InfoGet();
-    err = R_GPT_Open(g_timer0.p_ctrl, g_timer0.p_cfg);
-    err = R_GPT_Enable(g_timer0.p_ctrl);
-    err = R_GPT_CallbackSet(g_timer0.p_ctrl, timer0_callback, NULL, NULL);
-    err = R_GPT_Start(g_timer0.p_ctrl);
-    //err = R_GPT_InfoGet(g_timer0.p_ctrl, &g_timer0_info);
+    err = Timer_Open(&g_timer0);
+    err = Timer_Enable(&g_timer0);
+    err = Timer_CallbackSet(&g_timer0,timer0_callback, NULL, NULL);
+    err = Timer_Start(&g_timer0);
 
+    //err = R_GPT_InfoGet(g_timer0.p_ctrl, &g_timer0_info);
 #endif
 
 #if GPT1_MODULE
 
-    err = R_GPT_Open(g_timer1.p_ctrl, g_timer1.p_cfg);
-    err = R_GPT_Enable(g_timer1.p_ctrl);
-    err = R_GPT_CallbackSet(g_timer1.p_ctrl, timer1_callback, NULL, NULL);
+    err = Timer_Open(&g_timer1);
+    err = Timer_Enable(&g_timer1);
+    err = Timer_CallbackSet(&g_timer1,timer1_callback, NULL, NULL);
+
 
 
 #endif
-
-#if NORMAL_CODE
-    if (timer0_is_full == true)
-    {
-        err = R_GPT_Reset(g_timer1.p_ctrl);
-    }
-    else if (timer1_is_full == true)
-    {
-        err = R_GPT_Reset(g_timer1.p_ctrl);
-    }
-#endif
-
-
 
 #if ADC_MODULE
     adc_start_scan();
     adc_start_calibration();
     //while (1)
     //R_SYSTEM->SCKDIVCR_b.ICK = 0x00;
-    FSP_PARAMETER_NOT_USED(err);
-    //calibrate the adc module
 
+    //calibrate the adc module
     err = R_ADC_ScanStart(g_adc0.p_ctrl);
     R_BSP_IrqDisable((IRQn_Type)ADC_EVENT_SCAN_COMPLETE);
 
-    err = R_GPT_Start(g_timer1.p_ctrl);
+
+
+    err = Timer_Start(&g_timer1);
+
     //must be called after R_ADC_ScanStart because you cannot disable it
 
     APP_PRINTF("Scan is started\n");
@@ -203,6 +197,17 @@ void adc_thread_entry(void)
 
 #endif
 
+
+#if NORMAL_CODE
+    if (timer0_is_full == true)
+    {
+        err = R_GPT_Reset(g_timer1.p_ctrl);
+    }
+    else if (timer1_is_full == true)
+    {
+        err = R_GPT_Reset(g_timer1.p_ctrl);
+    }
+#endif
 }
 
 #if ADC_MODULE
@@ -265,7 +270,7 @@ void adc_start_calibration(void)
     APP_PRINTF("\r\nADC Calibration Successful..\r\n");
 }
 
-void adc_periodic_read_scan(g_sf_adc0_period_t * g_sf_adc0_period_t_ptr)
+void adc_periodic_read_scan(sf_adc_period_t * g_sf_adc0_period_t_ptr)
 {
     for (uint32_t i =0; i < g_sf_adc_periodic0.p_cfg->sample_count; i++)
     {
@@ -283,36 +288,14 @@ void adc_periodic_read_scan(g_sf_adc0_period_t * g_sf_adc0_period_t_ptr)
 }
 #endif
 
-#if GPT_MODULE
-void timer0_Init(void)
-{
-    err = R_GPT_Open(g_timer0.p_ctrl, g_timer0.p_cfg);
 
-    //this one can be seperated and used else where
-    err = R_GPT_Enable(g_timer0.p_ctrl);
-}
-
-void timer0_Start(void)
-{
-    err = R_GPT_Start(g_timer0.p_ctrl);
-
-    //set callback
-    err = R_GPT_CallbackSet(g_timer0.p_ctrl, timer0_callback, NULL, NULL);
-}
-
-void timer0_InfoGet(void)
-{
-    err = R_GPT_InfoGet(g_timer0.p_ctrl, &g_timer0_info);
-}
-
-void timer0_StatusGet(void)
-{
-    err = R_GPT_StatusGet(g_timer0.p_ctrl, &g_timer0_status);
-}
 
 void timer0_callback(timer_callback_args_t *p_args)
 {
+
     FSP_PARAMETER_NOT_USED(p_args);
+#if GPT_MODULE
+    err = Timer_StatusGet(&g_timer0, &g_timer0_status);
 
 #if GPT_IN_ADC_MODULE
 
@@ -323,25 +306,24 @@ void timer0_callback(timer_callback_args_t *p_args)
 #endif
 
     timer0_count++;
-
-
-
-
+#endif
 }
 
-#endif
 
 
-#if GPT1_MODULE
+
+
 
 void timer1_callback(timer_callback_args_t *p_args)
 {
 
         FSP_PARAMETER_NOT_USED(p_args);
-
+#if GPT1_MODULE
+        err = Timer_StatusGet(&g_timer1, &g_timer1_status);
+        err = Timer_StatusGet(&g_timer0, &g_timer0_status);
 
         //read the adc signal calibrated at 4khz
-        err = R_ADC_Read(g_adc0.p_ctrl, ADC_CHANNEL_1, (buffer_array + buffer_array_index));
+        //err = R_ADC_Read(g_adc0.p_ctrl, ADC_CHANNEL_1, (buffer_array + buffer_array_index));
 //        err = R_ADC_Read(g_adc0.p_ctrl, ADC_CHANNEL_1, NULL);
         buffer_array_index++;
         timer1_counter++;
@@ -363,6 +345,9 @@ void timer1_callback(timer_callback_args_t *p_args)
 //            err = R_ADC_ScanStop(g_adc0.p_ctrl);
 //            err= R_GPT_Stop(g_timer1.p_ctrl);
 //        }
+#endif
 }
 
 #endif
+
+

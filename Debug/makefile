@@ -12,6 +12,7 @@ RM := rm -rf
 -include sources.mk
 -include src/SEGGER_RTT/subdir.mk
 -include src/IRQ_Module/subdir.mk
+-include src/GPT_Module/subdir.mk
 -include src/ADC_Module/subdir.mk
 -include src/subdir.mk
 -include ra_gen/subdir.mk

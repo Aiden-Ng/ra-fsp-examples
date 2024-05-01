@@ -20,8 +20,8 @@ void gpt_counter_overflow_isr(void);
 #define ADC0_WINDOW_A_IRQn          ((IRQn_Type) 1) /* ADC0 WINDOW A (Window A Compare match interrupt) */
 #define VECTOR_NUMBER_GPT1_COUNTER_OVERFLOW ((IRQn_Type) 2) /* GPT1 COUNTER OVERFLOW (Overflow) */
 #define GPT1_COUNTER_OVERFLOW_IRQn          ((IRQn_Type) 2) /* GPT1 COUNTER OVERFLOW (Overflow) */
-#define VECTOR_NUMBER_GPT2_COUNTER_OVERFLOW ((IRQn_Type) 3) /* GPT2 COUNTER OVERFLOW (Overflow) */
-#define GPT2_COUNTER_OVERFLOW_IRQn          ((IRQn_Type) 3) /* GPT2 COUNTER OVERFLOW (Overflow) */
+#define VECTOR_NUMBER_GPT0_COUNTER_OVERFLOW ((IRQn_Type) 3) /* GPT0 COUNTER OVERFLOW (Overflow) */
+#define GPT0_COUNTER_OVERFLOW_IRQn          ((IRQn_Type) 3) /* GPT0 COUNTER OVERFLOW (Overflow) */
 #ifdef __cplusplus
         }
         #endif

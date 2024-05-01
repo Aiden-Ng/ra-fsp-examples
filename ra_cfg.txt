@@ -309,7 +309,7 @@ FSP Configuration
       Input: Noise Filter A Sampling Clock Select: No Filter
       Input: Noise Filter B Sampling Clock Select: No Filter
       Interrupts: Callback: timer0_callback
-      Interrupts: Overflow/Crest Interrupt Priority: Priority 1
+      Interrupts: Overflow/Crest Interrupt Priority: Priority 0 (highest)
       Interrupts: Capture A Interrupt Priority: Disabled
       Interrupts: Capture B Interrupt Priority: Disabled
       Interrupts: Underflow/Trough Interrupt Priority: Disabled
@@ -329,7 +329,7 @@ FSP Configuration
       
     Instance "g_timer1 Timer, General PWM (r_gpt)"
       General: Name: g_timer1
-      General: Channel: 2
+      General: Channel: 0
       General: Mode: Periodic
       General: Period: 250
       General: Period Unit: Microseconds
