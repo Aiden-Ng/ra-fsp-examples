@@ -190,7 +190,7 @@
       <property id="module.driver.adc.trigger_group_b" value="_disabled"/>
       <property id="module.driver.adc.priority_group_a" value="module.driver.adc.priority_group_a.group_a_priority_off"/>
       <property id="module.driver.adc.add_average_count" value="module.driver.adc.add_average_count.add_off"/>
-      <property id="module.driver.adc.adc_vref_control" value="module.driver.adc.adc_vref_control.vrefh"/>
+      <property id="module.driver.adc.adc_vref_control" value="module.driver.adc.adc_vref_control.vref_output_2_5V"/>
       <property id="module.driver.adc.add_mask" value=""/>
       <property id="module.driver.adc.sample_hold_mask" value=""/>
       <property id="module.driver.adc.sample_hold_states" value="24"/>
@@ -263,7 +263,7 @@
     </module>
     <module id="module.driver.timer_on_gpt.1431219419">
       <property id="module.driver.timer.name" value="g_timer1"/>
-      <property id="module.driver.timer.channel" value="0"/>
+      <property id="module.driver.timer.channel" value="2"/>
       <property id="module.driver.timer.mode" value="module.driver.timer.mode.mode_periodic"/>
       <property id="module.driver.timer.period" value="250"/>
       <property id="module.driver.timer.unit" value="module.driver.timer.unit.unit_period_usec"/>

@@ -8,9 +8,12 @@
 #ifndef INITIALIZATION_H_
 #define INITIALIZATION_H_
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <ADC_Framework/ADC_Periodic_Framework_Stack.h>
 
 #include "hal_data.h"
 //important for fsp related error
@@ -22,7 +25,6 @@
 #include "SEGGER_RTT/SEGGER_RTT.h"
 
 //periodic framework
-#include "ADC_Framework_Stack/ADC_Periodic_Framework_Stack.h"
 //#include "fsp_common_api.h"
 
 #define RESET_VALUE 0X00

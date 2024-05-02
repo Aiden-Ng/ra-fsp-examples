@@ -1,5 +1,5 @@
 src/ADC_Module/ADC_Handler.o: ../src/ADC_Module/ADC_Handler.c \
- ../src/ADC_Module/ADC_Handler.h \
+ C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/ADC_Framework/ADC_Periodic_Framework_Stack.h \
  C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/Initialization.h \
  C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/ra_gen/hal_data.h \
  C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/ra/fsp/inc/api/bsp_api.h \
@@ -61,9 +61,8 @@ src/ADC_Module/ADC_Handler.o: ../src/ADC_Module/ADC_Handler.c \
  C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/ra_gen/common_data.h \
  C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/SEGGER_RTT/SEGGER_RTT.h \
  C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/SEGGER_RTT/SEGGER_RTT_Conf.h \
- C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/ADC_Framework_Stack/ADC_Periodic_Framework_Stack.h \
- C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/ADC_Framework_Stack/ADC_Periodic_Framework_Stack.h
-../src/ADC_Module/ADC_Handler.h:
+ ../src/ADC_Module/ADC_Handler.h
+C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/ADC_Framework/ADC_Periodic_Framework_Stack.h:
 C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/Initialization.h:
 C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/ra_gen/hal_data.h:
 C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/ra/fsp/inc/api/bsp_api.h:
@@ -125,5 +124,4 @@ C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/ra/fsp
 C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/ra_gen/common_data.h:
 C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/SEGGER_RTT/SEGGER_RTT.h:
 C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/SEGGER_RTT/SEGGER_RTT_Conf.h:
-C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/ADC_Framework_Stack/ADC_Periodic_Framework_Stack.h:
-C:/Workspace_Aevice/workspace_fsp_adc_example_EKRA2A1_no_release_self/mmp/src/ADC_Framework_Stack/ADC_Periodic_Framework_Stack.h:
+../src/ADC_Module/ADC_Handler.h:

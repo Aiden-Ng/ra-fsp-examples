@@ -141,7 +141,7 @@ FSP Configuration
       P914 19 USB_FS0_DP - - - "Peripheral mode" - - "USB_FS0: DP" - IO - - 
       P915 18 USB_FS0_DM - - - "Peripheral mode" - - "USB_FS0: DM" - IO - - 
       RES# 25 SYSTEM0_RES - - - - - - - - IO "Read only" - 
-      SBIAS/VREFI 38 "SDADC0_SBIAS / SDADC0_VREFI" - - - - - - - - IO "Read only" - 
+      SBIAS/VREFI 38 "SDADC0_VREFI / SDADC0_SBIAS" - - - - - - - - IO "Read only" - 
       VCC 11 SYSTEM0_VCC - - - - - - - - IO "Read only" - 
       VCCUSB 20 USB_FS0_VCC - - - - - - - - IO "Read only" - 
       VCCUSBLDO 21 USB_FS0_VCCLDO - - - - - - - - IO "Read only" - 
@@ -207,7 +207,7 @@ FSP Configuration
       P914 19 - - - - Disabled - - "USB_FS0: DP" - IO - - 
       P915 18 - - - - Disabled - - "USB_FS0: DM" - IO - - 
       RES# 25 SYSTEM0_RES - - - - - - - - IO "Read only" - 
-      SBIAS/VREFI 38 "SDADC0_SBIAS / SDADC0_VREFI" - - - - - - - - IO "Read only" - 
+      SBIAS/VREFI 38 "SDADC0_VREFI / SDADC0_SBIAS" - - - - - - - - IO "Read only" - 
       VCC 11 SYSTEM0_VCC - - - - - - - - IO "Read only" - 
       VCCUSB 20 USB_FS0_VCC - - - - - - - - IO "Read only" - 
       VCCUSBLDO 21 USB_FS0_VCCLDO - - - - - - - - IO "Read only" - 
@@ -256,7 +256,7 @@ FSP Configuration
       Interrupts: Group B Trigger: Disabled
       Interrupts: Group Priority (Valid only in Group Scan Mode): Group A cannot interrupt Group B
       Input: Add/Average Count: Disabled
-      Input: Reference Voltage control: VREFH0
+      Input: Reference Voltage control: VREFADC 2.5 V output
       Input: Addition/Averaging Mask (channel availability varies by MCU and unit): 
       Input: Sample and Hold: Sample and Hold Channels (Available only on selected MCUs): 
       Input: Sample and Hold: Sample Hold States (Applies only to channels 0, 1, 2): 24
@@ -329,7 +329,7 @@ FSP Configuration
       
     Instance "g_timer1 Timer, General PWM (r_gpt)"
       General: Name: g_timer1
-      General: Channel: 0
+      General: Channel: 2
       General: Mode: Periodic
       General: Period: 250
       General: Period Unit: Microseconds

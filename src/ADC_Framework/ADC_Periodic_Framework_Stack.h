@@ -5,14 +5,15 @@
  *      Author: Ng Hong Xi
  */
 
-#ifndef ADC_FRAMEWORK_STACK_ADC_PERIODIC_FRAMEWORK_STACK_H_
-#define ADC_FRAMEWORK_STACK_ADC_PERIODIC_FRAMEWORK_STACK_H_
+#ifndef ADC_FRAMEWORK_ADC_PERIODIC_FRAMEWORK_STACK_H_
+#define ADC_FRAMEWORK_ADC_PERIODIC_FRAMEWORK_STACK_H_
 
 /**
  * @brief Copied from ssp-renesas framework "ADC Periodic Framework on sf_adc_periodic"
  */
 
 #include "Initialization.h"
+
 
 typedef uint16_t adc_data_size_t;
 
@@ -29,4 +30,4 @@ typedef struct st_sf_adc_periodic_instance
 }sf_adc_period_t;
 
 
-#endif /* ADC_FRAMEWORK_STACK_ADC_PERIODIC_FRAMEWORK_STACK_H_ */
+#endif /* ADC_FRAMEWORK_ADC_PERIODIC_FRAMEWORK_STACK_H_ */
