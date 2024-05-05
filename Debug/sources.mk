@@ -60,7 +60,6 @@ ra/fsp/src/r_icu \
 ra/fsp/src/r_ioport \
 ra/fsp/src/r_lpm \
 ra_gen \
-src/IRQ_Module \
 src/LPM_Module \
 src/SEGGER_RTT \
 src \

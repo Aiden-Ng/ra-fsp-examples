@@ -10,24 +10,27 @@
 #define IRQ_MODULE  1
 #define LPM_MODULE  1
 #define GPIO_MODULE 0
-#define SLEEP 0
-#define STANDBY 0
-
+#define SLEEP       0
+#define STANDBY     0
 
 #if LPM_MODULE
 //this is to enable access to this power array
 extern lpm_instance_t const * g_lpm_instance_t[APP_LPM_MAX_STATE];
+
+//initialize the lpm_state
 lpm_state_t lpm_state = APP_LPM_SLEEP_STATE;
 #endif
 
 #if GPIO_MODULE
+
+//write PCRC protet control register, remember to write a5 to the upper first 8 bit
+#define REG (0xA502u)
+//to store the read enumeration
 bsp_io_level_t readLevel;
 
 #endif
 
 fsp_err_t err = FSP_SUCCESS;
-
-#define REG (0xA502u) //write PCRC protet control register, remember to write a5 to the upper first 8 bit
 
 void lpm_entry(void)
 {
@@ -47,8 +50,8 @@ void lpm_entry(void)
     err = R_ICU_ExternalIrqEnable(g_external_irq0.p_ctrl);
 #endif
 
-    err = LPM_Open(g_lpm_instance_t[lpm_state]);
-    err = LPM_Reconfigure(g_lpm_instance_t[lpm_state]);
+    //err = LPM_Open(g_lpm_instance_t[lpm_state]);
+    //err = LPM_Reconfigure(g_lpm_instance_t[lpm_state]);
 
     while(1)
     {
@@ -56,17 +59,18 @@ void lpm_entry(void)
 #if GPIO_MODULE
         err = R_IOPORT_PinRead(g_ioport.p_ctrl, BSP_IO_PORT_02_PIN_06, &readLevel);
 #endif
-        //lpm_operation(&lpm_state);
+
 #if IRQ_MODULE
         R_BSP_SoftwareDelay(3, BSP_DELAY_UNITS_SECONDS);
         lpm_operation(&lpm_state);
 #endif
     }
 
-
 }
 void lpm_operation(lpm_state_t * lpm_state_args_ptr)
 {
+    //FIGURE OUT HOW TO CLOSE ALL THE GPIO PIN FOR LPM MODE
+    //err = R_IOPORT_PinsCfg(g_ioport.p_ctrl, & g_bsp_pin_lpm_cfg);
     err = LPM_Open(g_lpm_instance_t[*lpm_state_args_ptr]);
     err = LPM_Reconfigure(g_lpm_instance_t[*lpm_state_args_ptr]);
     err = LPM_Enter(g_lpm_instance_t[*lpm_state_args_ptr]);
@@ -93,10 +97,14 @@ void lpm_operation(lpm_state_t * lpm_state_args_ptr)
 }
 
 #if IRQ_MODULE
+
+//callback
 void external_irq0_callback(external_irq_callback_args_t *p_args)
 {
+    FSP_PARAMETER_NOT_USED(p_args);
     err = LPM_Close(g_lpm_instance_t[lpm_state]);
     lpm_state++;
+
 #if SLEEP
         err = LPM_Close(g_lpm_instance_t[APP_LPM_SLEEP_STATE]);
 #endif
@@ -104,9 +112,6 @@ void external_irq0_callback(external_irq_callback_args_t *p_args)
 #if STANDBY
         err = LPM_Close(g_lpm_instance_t[APP_LPM_SW_STANDBY_STATE]);
 #endif
-
-
-
 
 }
 #endif
